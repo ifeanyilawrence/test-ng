@@ -1,3 +1,4 @@
+
 import { Injectable, NgZone } from '@angular/core';
 import { auth } from 'firebase/app';
 import { User } from "../model/user";
@@ -57,7 +58,7 @@ export class AuthService {
   public signOut() {
     return this.afAuth.auth.signOut().then(() => {
       localStorage.setItem('user', null);
-      this.router.navigate(['login']);
+      this.router.navigate(['/login']);
     })
   }
 }
