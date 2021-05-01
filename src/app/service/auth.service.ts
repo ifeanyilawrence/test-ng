@@ -1,9 +1,10 @@
 
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable, NgZone, Inject } from '@angular/core';
 import { auth } from 'firebase/app';
 import { User } from "../model/user";
 import { Router } from "@angular/router";
-import { AngularFireAuth } from "@angular/fire/auth";
+import { AngularFireAuth } from "@angular/fire/auth"; 
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { AngularFireAuth } from "@angular/fire/auth";
 export class AuthService {
   user: User;
 
-  constructor(private router: Router, private ngZone: NgZone, private afAuth: AngularFireAuth) {
+  constructor(private router: Router, private ngZone: NgZone, private afAuth: AngularFireAuth, @Inject(DOCUMENT) private document: Document) {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.user = user;
@@ -58,6 +59,7 @@ export class AuthService {
   public signOut() {
     return this.afAuth.auth.signOut().then(() => {
       localStorage.setItem('user', null);
+      this.document.location.reload();
       this.router.navigate(['/login']);
     })
   }
